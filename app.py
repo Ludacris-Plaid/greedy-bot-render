@@ -11,6 +11,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 @app.route(f"/webhook/{TOKEN}", methods=["POST"])
 async def webhook():
+    if not TOKEN:
+        return Response("Missing BOT_TOKEN", status=500)
     bot = Bot(TOKEN)
     update = Update.de_json(request.get_json(force=True), bot)
     application = Application.builder().token(TOKEN).build()
@@ -19,4 +21,5 @@ async def webhook():
     return Response(status=200)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port, debug=False)
