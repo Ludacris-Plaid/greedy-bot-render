@@ -6,6 +6,10 @@ from telegram.ext import Application, CommandHandler, ContextTypes
 app = Flask(__name__)
 TOKEN = os.environ.get("BOT_TOKEN")
 
+@app.route("/", methods=["GET", "HEAD"])
+def health_check():
+    return Response("Bot is running", status=200)
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Hello! I'm Greedy Telegram Bot on Render.")
 
